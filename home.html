@@ -24,7 +24,85 @@
 
 <body>
 
-    <h1>welcome to the home page</h1>
+    <header class="flex justify-between items-center px-4 md:px-10 lg:px-20 py-4 bg-white">
+            <div class="flex items-center gap-2">
+                <img class="h-10 w-10" src="assets/github-logo.png" alt="">
+                <h1 class="font-semibold text-lg">GitHub issue tracker</h1>
+            </div>
+        <div class="flex gap-4">
+            <label class="input">
+                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke="currentColor"
+                    >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                    </g>
+                </svg>
+                <input type="search" required placeholder="Search issues..." />
+            </label>
+
+            <button class="btn btn-primary">+ New Issue</button>
+        </div>
+
+
+    </header>
+
+    <section class="bg-[#F8FAFC] px-10 md:px-25 lg:px-30 py-8 min-h-screen">
+
+        <div class="tab-container bg-white p-1 rounded-lg shadow-md mx-auto flex">
+
+                <div class="tabs p-4 gap-2 justify-start">
+                <button class="tab btn tab-active w-20 py-2 px-3 mx-auto btn-primary border-gray-500" onclick="changeTab('all')" id="tabAll">All</button>
+                <button class="tab btn w-20 py-2 px-3 mx-auto border-gray-500" onclick="changeTab('open')" id="tabOpen">Open</button>
+                <button class="tab btn w-20 py-2 px-3 mx-auto border-gray-500" onclick="changeTab('closed')" id="tabClosed">Closed</button>
+                </div>
+
+        </div>
+
+        <div class="flex justify-between items-center mt-5 bg-white p-4 rounded-lg shadow-md mx-auto md:">
+
+            <div class="flex gap-2 items-center">
+                <div class="bg-[#ECE4FF] p-2 rounded-full">
+                    <img class="h-10 w-10" src="assets/Aperture.png" alt="" srcset="">
+                </div>
+                <div>
+                    <h2 class="font-semibold"><span id="totalIssues">0</span> issues</h2>
+                    <p class="text-gray-500">Track and manage your project issues</p>
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <div class="flex gap-2 items-center">
+                    <div class="rounded-full h-3 w-3 bg-[#00A96E] "></div>
+                    <h1> Open</h1>
+                </div>
+
+                <div class="flex gap-2 items-center">
+                    <div class="rounded-full h-3 w-3 bg-[#A855F7] "></div>
+                    <h1> Closed</h1>
+                </div>
+                
+            </div>
+
+        </div>
+
+        <div id="issueContainer" class="mt-5 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4">
+
+            
+
+        </div>
+                
+        </div>
+
+    </section>
+
+
+    <script src="issue.js"></script>
     
 </body>
 
