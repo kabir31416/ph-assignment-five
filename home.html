@@ -13,6 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <title>GitHub issue tracker</title>
 
     <style>
@@ -43,10 +45,10 @@
                     <path d="m21 21-4.3-4.3"></path>
                     </g>
                 </svg>
-                <input type="search" required placeholder="Search issues..." />
+                <input id="searchInput"  type="search" required placeholder="Search issues..." />
             </label>
 
-            <button class="btn btn-primary">+ New Issue</button>
+            <button class="btn btn-primary" onclick="performSearch()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
         </div>
 
 
@@ -91,9 +93,14 @@
 
         </div>
 
+            <div id="loading-spinner" class="hidden flex justify-center items-center my-20">
+                <span class="loading loading-spinner loading-lg text-primary"></span>
+                <span class="ml-2">Loading...</span>
+            </div>
+
 
         <div id="issueContainer" class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3 bg-[#FBFBFB] p-4 rounded-b-lg shadow-md">
-            
+
         </div>
       
         

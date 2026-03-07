@@ -23,9 +23,28 @@ function changeTab(tab) {
 }
 
 const loadIssues = () => {
-  fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
-    .then(res => res.json())
-    .then(json => displayFilteredIssues(allIssues = json.data));
+    const spinner = document.getElementById("loading-spinner");
+    const container = document.getElementById("issue-container");
+
+    spinner.classList.remove("hidden");
+    
+    if(container) container.innerHTML = "";
+
+    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+        .then(res => res.json())
+        .then(json => {
+
+            setTimeout(() => {
+                allIssues = json.data;
+                displayFilteredIssues(allIssues);
+            
+                spinner.classList.add("hidden");
+            }, 1000); 
+        })
+        .catch(err => {
+            console.error(err);
+            spinner.classList.add("hidden");  
+        });
 };
 
 const displayFilteredIssues = () => {
@@ -115,6 +134,25 @@ displayIssues = (issues) => {
         issueContainer.appendChild(issueElement);
     });
 };
+
+
+searchInput.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    performSearch();
+  }
+});
+
+function performSearch() {
+  
+  const query = document.getElementById("searchInput").value.toLowerCase();
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${query}`)
+    .then(res => res.json())
+    .then(json => {
+      const searchResults = json.data;
+      displayFilteredIssues(allIssues = searchResults);
+    });  
+}
+
 
 function btnClose() {
   const modal = document.getElementById("issue-modal");
