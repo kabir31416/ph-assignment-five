@@ -46,8 +46,11 @@ displayIssues = (issues) => {
     const issueContainer = document.getElementById("issueContainer");
     issueContainer.innerHTML = "";
 
+
     issues.forEach(issue => {
         const issueElement = document.createElement("div");
+
+        const newTime = new Date(issue.createdAt).toLocaleDateString();
 
         issueElement.innerHTML = `
             <div class="max-w-sm bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden h-full" onclick="openModal(${issue.id})">
@@ -64,9 +67,18 @@ displayIssues = (issues) => {
                                     : `<img class="h-8 w-8" src="./assets/Closed-Status.png" alt="">`
                                 }
 
-                                <span class="bg-red-50 text-red-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">
-                                    ${issue.priority}
-                                </span>
+
+                                ${issue.priority.toLowerCase() === "high"
+                                    ? `<span class="bg-green-50 text-green-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
+                                </span>` 
+                                    : issue.priority.toLowerCase() === "medium"
+                                        ? `<span class="bg-orange-50 text-orange-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
+                                        </span>`
+                                        : `<span class="bg-gray-50 text-gray-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
+                                        </span>`
+                                }
+
+
                             </div>
 
                             <h2 class="text-slate-800 font-bold text-xl mb-2">${issue.title}</h2>
@@ -75,26 +87,25 @@ displayIssues = (issues) => {
                             </p>
 
                             <div class="flex flex-wrap gap-3 mb-6">
-                                    ${issue.labels.map(label => {
-                                        const colors = {
-                                            "bug": "bg-red-50 border-red-100 text-red-500",
-                                            "help wanted": "bg-orange-50 border-orange-100 text-orange-600",
-                                            "enhancement": "bg-green-50 border-green-100 text-green-600",
-                                            "question": "bg-blue-50 border-blue-100 text-blue-600"
-                                        };
-                                        const setColor = colors[label.toLowerCase()] || "bg-gray-50 border-gray-100 text-gray-500";
+                                  ${issue.labels.map(label => {
+                                    let setColor = "bg-gray-100 text-gray-700 border-gray-200";
+                                    
+                                    if (label.toLowerCase() === 'bug') setColor = "bg-red-100 text-red-700 border-red-200";
+                                    if (label.toLowerCase() === 'feature') setColor = "bg-blue-100 text-blue-700 border-blue-200";
+                                    if (label.toLowerCase() === 'enhancement') setColor = "bg-green-100 text-green-700 border-green-200";
+                                    if (label.toLowerCase() === 'help wanted') setColor = "bg-orange-100 text-orange-700 border-orange-200";
 
-                                        return `
-                                            <div class="flex items-center gap-1.5 ${setColor} border px-3 py-1.5 rounded-full text-xs font-semibold uppercase">
-                                            ${label}
-                                            </div>
-                                        `;
-                                    }).join('')}
+                                    return `
+                                      <div class="flex items-center gap-1.5 ${setColor} border px-3 py-1.5 rounded-full text-xs font-semibold uppercase">
+                                        ${label}
+                                      </div>
+                                    `;
+                                  }).join('')}
                                 </div>
 
                             <div class="border-t border-slate-100 pt-4 mt-4">
                             <p class="text-slate-500 text-sm font-medium">#${issue.id} ${issue.author}</p>
-                            <p class="text-slate-400 text-sm mt-1">${issue.date}</p>
+                            <p class="text-slate-400 text-sm mt-1">${newTime}</p>
                         </div>
                     </div>
             </div>
@@ -110,9 +121,87 @@ function btnClose() {
   modal.close();
 }
 
-function openModal() {
+function openModal(id) {
   const modal = document.getElementById("issue-modal");
+  const modalBox = modal.querySelector(".modal-box");
+
+  modalBox.innerHTML = ``;
   modal.showModal();
+
+  
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`)
+    .then(res => {return res.json();
+    })
+    .then(json => {
+      const issue = json.data;
+      
+      const newTime = new Date(issue.createdAt).toLocaleDateString();
+      
+      modalBox.innerHTML = `
+        <h1 id="modalTitle" class="mb-4">${issue.title}</h1>
+                        <div class="flex justify-start items-center">
+
+                          ${issue.status.toLowerCase() === "open"
+                            ? `<p class="px-2 py-1 rounded-full bg-[#00A96E] text-sm text-white">Opened</p> `
+                            : `<p class="px-2 py-1 rounded-full bg-[#A855F7] text-sm text-white">Closed</p> `
+                        }
+                          <span class="text-gray-400 ml-2"> &bull;</span>
+
+                            <p class="px-2 py-1 rounded-full text-sm text-gray-800"> <span>Opened by </span>${issue.author}</p>
+
+                            <span class="text-gray-400">&bull;</span>
+
+                            <p class="px-2 py-1 rounded-full text-sm text-gray-600">${newTime}</p>
+                        </div>
+
+                        <div class="flex flex-wrap gap-3 my-6">
+                                  ${issue.labels.map(label => {
+                                    let setColor = "bg-gray-100 text-gray-700 border-gray-200";
+                                    
+                                    if (label.toLowerCase() === 'bug') setColor = "bg-red-100 text-red-700 border-red-200";
+                                    if (label.toLowerCase() === 'feature') setColor = "bg-blue-100 text-blue-700 border-blue-200";
+                                    if (label.toLowerCase() === 'enhancement') setColor = "bg-green-100 text-green-700 border-green-200";
+                                    if (label.toLowerCase() === 'help wanted') setColor = "bg-orange-100 text-orange-700 border-orange-200";
+
+                                    return `
+                                      <div class="flex items-center gap-1.5 ${setColor} border px-3 py-1.5 rounded-full text-xs font-semibold uppercase">
+                                        ${label}
+                                      </div>
+                                    `;
+                                  }).join('')}
+                                </div>
+
+                        <p class="text-slate-500 text-sm leading-relaxed mt-4 mb-6">
+                            ${issue.description}
+                        </p>
+
+                        <div class="flex justify-start items-center gap-8 mb-6 rounded-lg bg-[#F8FAFC] p-4">
+
+                             <div class="flex-1">
+                             <p class="text-sm ">Assignee:</p>
+                             <p class="text-sm font-bold">${issue.author}</p>
+                            </div>
+
+                            <div class="flex-1">
+                             <p class="text-sm ">Priority</p>
+                             ${issue.priority.toLowerCase() === "high"
+                                    ? `<span class="bg-green-100 text-green-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
+                                </span>` 
+                                    : issue.priority.toLowerCase() === "medium"
+                                        ? `<span class="bg-orange-100 text-orange-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
+                                        </span>`
+                                        : `<span class="bg-gray-100 text-gray-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
+                                        </span>`
+                                }
+                            </div>
+                        
+                        </div>
+
+                        <div class="modal-action">
+                        <button class="btn" onclick="btnClose()">Close</button>
+                        </div>
+      `;
+    })
 }
 
 function updateCounts() {
