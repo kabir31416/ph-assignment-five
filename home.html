@@ -91,16 +91,38 @@
 
         </div>
 
+
         <div id="issueContainer" class="mt-5 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4">
 
-            
-
         </div>
-                
-        </div>
-
+      
+        
     </section>
 
+
+            <dialog id="issue-modal" class="modal">
+                <div class="modal-box">
+
+                    <div>
+                        <h1 id="modalTitle"> Issue Title</h1>
+                        <div class="flex justify-start items-center">
+
+                            <p id="modalStatus" class="px-2 py-1 rounded-full bg-[#00A96E] text-sm text-white">Open</p>
+                            <p id="modalAuthor" class="px-2 py-1 rounded-full text-sm text-gray-600"> <span>Opened by </span>John Doe</p>
+                            <p id="modalDate" class="px-2 py-1 rounded-full text-sm text-gray-600">2023-01-01</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        
+                    </div>
+
+                    
+                    <div class="modal-action">
+                        <button class="btn" onclick="btnClose()">Close</button>
+                    </div>
+                </div>
+            </dialog>
 
     <script src="issue.js"></script>
     

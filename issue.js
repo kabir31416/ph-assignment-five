@@ -50,7 +50,7 @@ displayIssues = (issues) => {
         const issueElement = document.createElement("div");
 
         issueElement.innerHTML = `
-            <div class="max-w-sm bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden h-full">
+            <div class="max-w-sm bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden h-full" onclick="openModal(${issue.id})">
                 
                 ${issue.status.toLowerCase() === "open" 
                                     ? `<div class="h-1.5 bg-emerald-500 w-full"></div>` 
@@ -60,8 +60,8 @@ displayIssues = (issues) => {
                         <div class="p-5">
                             <div class="flex justify-between items-center mb-4">
                                 ${issue.status.toLowerCase() === "open" 
-                                    ? `<img class="h-10 w-10" src="./assets/Open-Status.png" alt="">` 
-                                    : `<img class="h-10 w-10" src="./assets/Closed-Status.png" alt="">`
+                                    ? `<img class="h-8 w-8" src="./assets/Open-Status.png" alt="">` 
+                                    : `<img class="h-8 w-8" src="./assets/Closed-Status.png" alt="">`
                                 }
 
                                 <span class="bg-red-50 text-red-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">
@@ -104,6 +104,16 @@ displayIssues = (issues) => {
         issueContainer.appendChild(issueElement);
     });
 };
+
+function btnClose() {
+  const modal = document.getElementById("issue-modal");
+  modal.close();
+}
+
+function openModal() {
+  const modal = document.getElementById("issue-modal");
+  modal.showModal();
+}
 
 function updateCounts() {
   totalIssues.innerText =   issues.length;
