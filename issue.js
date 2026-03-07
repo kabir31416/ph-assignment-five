@@ -138,7 +138,7 @@ function openModal(id) {
       const newTime = new Date(issue.createdAt).toLocaleDateString();
       
       modalBox.innerHTML = `
-        <h1 id="modalTitle" class="mb-4">${issue.title}</h1>
+        <h1 id="modalTitle" class="mb-4 font-bold text-lg">${issue.title}</h1>
                         <div class="flex justify-start items-center">
 
                           ${issue.status.toLowerCase() === "open"
@@ -185,12 +185,12 @@ function openModal(id) {
                             <div class="flex-1">
                              <p class="text-sm ">Priority</p>
                              ${issue.priority.toLowerCase() === "high"
-                                    ? `<span class="bg-green-100 text-green-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
+                                    ? `<span class="bg-green-100 text-green-500 text-xs px-2 py-1 rounded-full tracking-wider uppercase">${issue.priority}
                                 </span>` 
                                     : issue.priority.toLowerCase() === "medium"
-                                        ? `<span class="bg-orange-100 text-orange-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
+                                        ? `<span class="bg-orange-100 text-orange-500 text-xs px-2 py-1 rounded-full tracking-wider uppercase">${issue.priority}
                                         </span>`
-                                        : `<span class="bg-gray-100 text-gray-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
+                                        : `<span class="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded-full tracking-wider uppercase">${issue.priority}
                                         </span>`
                                 }
                             </div>
