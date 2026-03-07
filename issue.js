@@ -71,13 +71,13 @@ displayIssues = (issues) => {
 
         const newTime = new Date(issue.createdAt).toLocaleDateString();
 
+        let borderColor = "border border-gray-200";
+                                    
+          if (issue.status.toLowerCase() === "open" ) borderColor = "border-[#00A96E]";
+          if (issue.status.toLowerCase() === "closed" ) borderColor = "border-[#A855F7]";
+
         issueElement.innerHTML = `
-            <div class="max-w-sm bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden h-full" onclick="openModal(${issue.id})">
-                
-                ${issue.status.toLowerCase() === "open" 
-                                    ? `<div class="h-1.5 bg-emerald-500 w-full"></div>` 
-                                    : `<div class="h-1.5 bg-purple-500 w-full"></div>`
-                                }
+            <div class="max-w-sm bg-white border-t-3 ${borderColor} rounded-xl shadow-sm h-full" onclick="openModal(${issue.id})">
 
                         <div class="p-5">
                             <div class="flex justify-between items-center mb-4">
