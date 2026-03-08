@@ -1,7 +1,5 @@
 let currentTab = "all";
 
-let allIssues = [];
-
 function changeTab(tab) {
   currentTab = tab;
 
@@ -22,11 +20,14 @@ function changeTab(tab) {
   displayFilteredIssues();
 }
 
+let allIssues = [];
+
 const loadIssues = () => {
     const spinner = document.getElementById("loading-spinner");
     const container = document.getElementById("issue-container");
 
     spinner.classList.remove("hidden");
+    spinner.classList.add("flex");
     
     if(container) container.innerHTML = "";
 
@@ -71,10 +72,12 @@ displayIssues = (issues) => {
 
         const newTime = new Date(issue.createdAt).toLocaleDateString();
 
+        const newAuthor = issue.author
+          .split("_").map(name => name.charAt(0).toUpperCase() + name.slice(1)).join(" ");
+
         let borderColor = "border border-gray-200";
-                                    
-          if (issue.status.toLowerCase() === "open" ) borderColor = "border-[#00A96E]";
-          if (issue.status.toLowerCase() === "closed" ) borderColor = "border-[#A855F7]";
+        if (issue.status.toLowerCase() === "open" ) borderColor = "border-[#00A96E]";
+        if (issue.status.toLowerCase() === "closed" ) borderColor = "border-[#A855F7]";
 
         issueElement.innerHTML = `
             <div class="max-w-sm bg-white border-t-3 ${borderColor} rounded-xl shadow-sm h-full" onclick="openModal(${issue.id})">
@@ -88,12 +91,12 @@ displayIssues = (issues) => {
 
 
                                 ${issue.priority.toLowerCase() === "high"
-                                    ? `<span class="bg-green-50 text-green-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
+                                    ? `<span class="bg-green-100 text-green-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
                                 </span>` 
                                     : issue.priority.toLowerCase() === "medium"
-                                        ? `<span class="bg-orange-50 text-orange-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
+                                        ? `<span class="bg-orange-100 text-orange-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
                                         </span>`
-                                        : `<span class="bg-gray-50 text-gray-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
+                                        : `<span class="bg-gray-100  text-gray-500 text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase">${issue.priority}
                                         </span>`
                                 }
 
@@ -113,6 +116,8 @@ displayIssues = (issues) => {
                                     if (label.toLowerCase() === 'feature') setColor = "bg-blue-100 text-blue-700 border-blue-200";
                                     if (label.toLowerCase() === 'enhancement') setColor = "bg-green-100 text-green-700 border-green-200";
                                     if (label.toLowerCase() === 'help wanted') setColor = "bg-orange-100 text-orange-700 border-orange-200";
+                                    if (label.toLowerCase() === 'documentation') setColor = "bg-yellow-100 text-yellow-700 border-yellow-200";
+                                    if (label.toLowerCase() === 'good first issue') setColor = "bg-purple-100 text-purple-700 border-purple-200";
 
                                     return `
                                       <div class="flex items-center gap-1.5 ${setColor} border px-3 py-1.5 rounded-full text-xs font-semibold uppercase">
@@ -123,7 +128,7 @@ displayIssues = (issues) => {
                                 </div>
 
                             <div class="border-t border-slate-100 pt-4 mt-4">
-                            <p class="text-slate-500 text-sm font-medium">#${issue.id} ${issue.author}</p>
+                            <p class="text-slate-500 text-sm font-medium">#${issue.id} ${newAuthor}</p>
                             <p class="text-slate-400 text-sm mt-1">${newTime}</p>
                         </div>
                     </div>
@@ -175,6 +180,12 @@ function openModal(id) {
       
       const newTime = new Date(issue.createdAt).toLocaleDateString();
       
+      const newAuthor = issue.author
+          .split("_").map(name => name.charAt(0).toUpperCase() + name.slice(1)).join(" ");
+
+      const newAssignee = issue.assignee
+          .split("_").map(name => name.charAt(0).toUpperCase() + name.slice(1)).join(" ");
+      
       modalBox.innerHTML = `
         <h1 id="modalTitle" class="mb-4 font-bold text-lg">${issue.title}</h1>
                         <div class="flex justify-start items-center">
@@ -185,7 +196,7 @@ function openModal(id) {
                         }
                           <span class="text-gray-400 ml-2"> &bull;</span>
 
-                            <p class="px-2 py-1 rounded-full text-sm text-gray-800"> <span>Opened by </span>${issue.author}</p>
+                            <p class="px-2 py-1 rounded-full text-sm text-gray-800"> <span>Opened by </span>${newAuthor}</p>
 
                             <span class="text-gray-400">&bull;</span>
 
@@ -217,7 +228,7 @@ function openModal(id) {
 
                              <div class="flex-1">
                              <p class="text-sm ">Assignee:</p>
-                             <p class="text-sm font-bold">${issue.author}</p>
+                             <p class="text-sm font-bold">${newAssignee}</p>
                             </div>
 
                             <div class="flex-1">
